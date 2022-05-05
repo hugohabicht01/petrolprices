@@ -1,59 +1,47 @@
 <script setup lang="ts">
-import { useUserStore } from '~/stores/user'
+import type { byCoordinates } from 'tankerkoenigv4'
+import { $fetch } from 'ohmyfetch'
 
-const user = useUserStore()
-const name = $ref(user.savedName)
+type PetrolStations = Awaited<ReturnType<typeof byCoordinates>>
 
-const router = useRouter()
-const go = () => {
-  if (name)
-    router.push(`/hi/${encodeURIComponent(name)}`)
+const station = reactive<{ stations: PetrolStations | null }>({ stations: null })
+const { coords, isSupported, error, locatedAt } = useGeolocation({ enableHighAccuracy: true })
+
+const fetchStations = async () => {
+  const res = await $fetch('/api/find', {
+    params: {
+      lat: coords.value.latitude,
+      lng: coords.value.longitude,
+    },
+  })
+  console.log({ res })
+  station.stations = res
 }
 
-const { t } = useI18n()
 </script>
 
 <template>
   <div>
-    <div text-4xl>
-      <div i-carbon-campsite inline-block />
+    <h1>Current coordinates:</h1>
+    <div v-if="!isSupported" text-red-400>
+      Not supported
     </div>
-    <p>
-      <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
-        Vitesse
-      </a>
+    <p v-if="isSupported && !error">
+      {{ coords.latitude }},
+      {{ coords.longitude }}
     </p>
-    <p>
-      <em text-sm opacity-75>{{ t('intro.desc') }}</em>
-    </p>
-
-    <div py-4 />
-
-    <input
-      id="input"
-      v-model="name"
-      :placeholder="t('intro.whats-your-name')"
-      :aria-label="t('intro.whats-your-name')"
-      type="text"
-      autocomplete="false"
-      p="x4 y2"
-      w="250px"
-      text="center"
-      bg="transparent"
-      border="~ rounded gray-200 dark:gray-700"
-      outline="none active:none"
-      @keydown.enter="go"
-    >
-    <label class="hidden" for="input">{{ t('intro.whats-your-name') }}</label>
-
+    <div v-if="error">
+      Error: {{ error }}
+    </div>
+    <div>Located at: {{ locatedAt }}</div>
+    <button dark:bg-bluegray-200 dark:text-black bg-sky-300 text-blue-800 px-4 py-2 rounded @click="fetchStations">
+      Fetch
+    </button>
     <div>
-      <button
-        btn m-3 text-sm
-        :disabled="!name"
-        @click="go"
-      >
-        {{ t('button.go') }}
-      </button>
+      <h2>Petrolstations:</h2>
+      <pre>
+        {{ station.stations }}
+      </pre>
     </div>
   </div>
 </template>
