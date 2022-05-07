@@ -12,3 +12,12 @@ intro:
   aka: Also known as
   whats-your-name: What's your name?
 not-found: Not found
+geo:
+  not-available: Your current GPS coordinates couldn't be determined automatically, please enter your current location manually
+station:
+  now: Now
+  open: open
+  closed: closed
+  prices: Prices
+  openingTimes: Opening times
+  until: until

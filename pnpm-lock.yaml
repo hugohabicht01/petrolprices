@@ -37,6 +37,7 @@ specifiers:
   vite-plugin-pages: ^0.23.0
   vite-plugin-pwa: ^0.12.0
   vite-plugin-vue-layouts: ^0.6.0
+  vite-plugin-vue-type-imports: ^0.1.3
   vite-ssg: ^0.19.2
   vite-ssg-sitemap: ^0.2.5
   vitest: ^0.10.0
@@ -89,6 +90,7 @@ devDependencies:
   vite-plugin-pages: 0.23.0_vite@2.9.8
   vite-plugin-pwa: 0.12.0_vite@2.9.8
   vite-plugin-vue-layouts: 0.6.0_husqietd6xoepun2tc4v73afle
+  vite-plugin-vue-type-imports: 0.1.3_vue@3.2.33
   vite-ssg: 0.19.2_uhne5wm5qpolinapsgjqcugibi
   vite-ssg-sitemap: 0.2.6
   vitest: 0.10.2
@@ -1708,7 +1710,7 @@ packages:
       '@bugsnag/js': 7.16.2
       '@netlify/cache-utils': 4.1.4
       '@netlify/config': 18.0.0
-      '@netlify/edge-bundler': 1.0.0
+      '@netlify/edge-bundler': 1.1.0
       '@netlify/functions-utils': 4.1.13_supports-color@9.2.2
       '@netlify/git-utils': 4.1.1
       '@netlify/plugins-list': 6.24.0
@@ -1810,8 +1812,8 @@ packages:
       yargs: 17.4.1
     dev: true
 
-  /@netlify/edge-bundler/1.0.0:
-    resolution: {integrity: sha512-9pVyU0yXqdGG3LFEwtRBzUpGyplPE7hCGEvkxZpGvKjbiC0/jj6x/b6g7Ecjd3wzb6u1QpPq6XQhI+ZIl/PI3Q==}
+  /@netlify/edge-bundler/1.1.0:
+    resolution: {integrity: sha512-9VT1Xw1Uh0coDA0n/G4zqOMLtxYtX+eLp3kMWCdATyCeaeZgEsjzAP8PmabFh1dBR0kDf8wxjhyyku1TDWJ8fw==}
     engines: {node: ^12.20.0 || ^14.14.0 || >=16.0.0}
     dependencies:
       common-path-prefix: 3.0.0
@@ -9348,7 +9350,7 @@ packages:
     dependencies:
       '@netlify/build': 27.1.0
       '@netlify/config': 18.0.0
-      '@netlify/edge-bundler': 1.0.0
+      '@netlify/edge-bundler': 1.1.0
       '@netlify/framework-info': 9.0.2
       '@netlify/local-functions-proxy': 1.1.1
       '@netlify/plugins-list': 6.24.0
@@ -12677,6 +12679,15 @@ packages:
       vue-router: 4.0.15_vue@3.2.33
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /vite-plugin-vue-type-imports/0.1.3_vue@3.2.33:
+    resolution: {integrity: sha512-iF5NgeQc2MZ6wDUS1tnN7rglkWmm+WhK9rCQb3FudsrMTqLazbtN6shyrEcsGBdqYAqH9c5HhiwU3gOIrFcVHA==}
+    peerDependencies:
+      '@vue/compiler-sfc': ^3.2.24
+      vue: ^3.2.24
+    dependencies:
+      vue: 3.2.33
     dev: true
 
   /vite-ssg-sitemap/0.2.6:
