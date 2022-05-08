@@ -28,6 +28,7 @@ export const usePetrolPrices = (lat: Ref<number>, lng: Ref<number>) => {
   const prices = ref<PetrolPrices | null>(null)
   const error = ref<Error | null>(null)
   const progress = ref<fetchState>(fetchState.idle)
+  const refreshCount = ref(0)
 
   function doFetch() {
     prices.value = null
@@ -37,6 +38,7 @@ export const usePetrolPrices = (lat: Ref<number>, lng: Ref<number>) => {
         prices.value = data
         progress.value = fetchState.done
         error.value = null
+        refreshCount.value = refreshCount.value + 1
       }).catch(err => {
         error.value = err
         progress.value = fetchState.error
@@ -44,5 +46,5 @@ export const usePetrolPrices = (lat: Ref<number>, lng: Ref<number>) => {
       })
   }
   watchEffect(doFetch)
-  return { prices, error, progress }
+  return { prices, error, progress, refreshCount }
 }

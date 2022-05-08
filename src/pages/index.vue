@@ -8,19 +8,19 @@ watchThrottled(coords, (val) => {
   lat.value = val.latitude
   lng.value = val.longitude
 })
-const { prices, progress, error } = usePetrolPrices(lat, lng)
+const { prices, progress, error, refreshCount } = usePetrolPrices(lat, lng)
 
 </script>
 
 <template>
   <div>
-    <!-- <Geolocation /> -->
     <!-- <button dark:bg-gray-200 dark:text-gray-700 bg-gray-300 py-2 px-4 rounded @click="store.fetchStations">
       Find prices
     </button> -->
     <div>
       lat: {{ lat }}, lng: {{ lng }}
     </div>
+    <p>Refresh count: {{ refreshCount }}</p>
     <p v-if="error">
       Couldn't find real time fuel prices
     </p>
