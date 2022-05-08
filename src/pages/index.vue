@@ -7,8 +7,8 @@ const lng = ref<number>(Infinity)
 watchThrottled(coords, (val) => {
   lat.value = val.latitude
   lng.value = val.longitude
-})
-const { prices, progress, error, refreshCount } = usePetrolPrices(lat, lng)
+}, { throttle: 1000 })
+const { prices, progress, error, refreshCount, distanceToPrevious, previous } = usePetrolPrices(lat, lng, { refreshDistanceThreshold: 5 })
 
 </script>
 
@@ -19,6 +19,11 @@ const { prices, progress, error, refreshCount } = usePetrolPrices(lat, lng)
     </button> -->
     <div>
       lat: {{ lat }}, lng: {{ lng }}
+    </div>
+    <div>
+      <h2>Composable infos</h2>
+      <p>Previous: {{ previous }}</p>
+      <p>distanceToPrevious: {{ distanceToPrevious }}</p>
     </div>
     <p>Refresh count: {{ refreshCount }}</p>
     <p v-if="error">

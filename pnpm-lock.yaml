@@ -5,6 +5,7 @@ specifiers:
   '@iconify-json/carbon': ^1.1.3
   '@intlify/vite-plugin-vue-i18n': ^4.0.0
   '@netlify/functions': ^1.0.0
+  '@types/haversine': ^1.1.5
   '@types/markdown-it-link-attributes': ^3.0.1
   '@types/node': ^14.18.16
   '@types/nprogress': ^0.2.0
@@ -17,6 +18,7 @@ specifiers:
   cypress: ^9.6.0
   eslint: ^8.14.0
   eslint-plugin-cypress: ^2.12.1
+  haversine: ^1.1.1
   https-localhost: ^4.7.1
   markdown-it-link-attributes: ^4.0.0
   markdown-it-prism: ^2.2.4
@@ -52,6 +54,7 @@ dependencies:
   '@types/node': 14.18.16
   '@vueuse/core': 8.4.1_vue@3.2.33
   '@vueuse/head': 0.7.6_vue@3.2.33
+  haversine: 1.1.1
   nprogress: 0.2.0
   ohmyfetch: 0.4.16
   pinia: 2.0.14_ytvqwwdyss532bvoq2clv4ed5m
@@ -66,6 +69,7 @@ devDependencies:
   '@antfu/eslint-config': 0.22.0_t725usgvqspm5woeqpaxbfp2qu
   '@iconify-json/carbon': 1.1.4
   '@intlify/vite-plugin-vue-i18n': 4.0.0_vite@2.9.8+vue-i18n@9.1.10
+  '@types/haversine': 1.1.5
   '@types/markdown-it-link-attributes': 3.0.1
   '@types/nprogress': 0.2.0
   '@vitejs/plugin-vue': 2.3.2_vite@2.9.8+vue@3.2.33
@@ -1494,8 +1498,8 @@ packages:
       - supports-color
     dev: true
 
-  /@intlify/bundle-utils/3.0.0_vue-i18n@9.1.10:
-    resolution: {integrity: sha512-y43Z5Q3ZJvxqtD8xUH6U3yrlZeay7ZTqkzv1GQ4b0mGQtk5uptOT9Ra4qvGuUv8QyPQsortrA/OHWUD5ax5ZNQ==}
+  /@intlify/bundle-utils/3.1.0_vue-i18n@9.1.10:
+    resolution: {integrity: sha512-ghlJ0kR2cCQ8D+poKknC0Xx0ncOt3J3os7CcIAqqIWVF7k6AtGoCDnIru+YzlZcvFRNmP9wEZ7jKliojCdAWNg==}
     engines: {node: '>= 12'}
     peerDependencies:
       petite-vue-i18n: '*'
@@ -1587,7 +1591,7 @@ packages:
       vue-i18n:
         optional: true
     dependencies:
-      '@intlify/bundle-utils': 3.0.0_vue-i18n@9.1.10
+      '@intlify/bundle-utils': 3.1.0_vue-i18n@9.1.10
       '@intlify/shared': 9.2.0-beta.35
       '@rollup/pluginutils': 4.2.1
       debug: 4.3.4
@@ -2654,6 +2658,10 @@ packages:
     resolution: {integrity: sha512-nvLlj+831dhdm4LR2Ly+HTpdLyBaMynoOr6wpIxS19d/bPeHQxFU5XQ6Gp6ohBpxvCWZM1uHQIC2+ySRH1rGrQ==}
     dependencies:
       '@types/node': 16.11.33
+    dev: true
+
+  /@types/haversine/1.1.5:
+    resolution: {integrity: sha512-ITIhOBn4tjADEWTfiR3U0ioNRRNOlMJjornJZA/O6pTkvqV69or1Ms0reMNQw3la+wURknlRd1DW+CYUcCvq8A==}
     dev: true
 
   /@types/http-cache-semantics/4.0.1:
@@ -7380,6 +7388,10 @@ packages:
       is-stream: 2.0.1
       type-fest: 0.8.1
     dev: true
+
+  /haversine/1.1.1:
+    resolution: {integrity: sha512-KW4MS8+krLIeiw8bF5z532CptG0ZyGGFj0UbKMxx25lKnnJ1hMUbuzQl+PXQjNiDLnl1bOyz23U6hSK10r4guw==}
+    dev: false
 
   /he/1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
