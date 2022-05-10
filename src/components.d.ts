@@ -8,13 +8,15 @@ declare module '@vue/runtime-core' {
     Counter: typeof import('./components/Counter.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     Geolocation: typeof import('./components/Geolocation.vue')['default']
+    GMap: typeof import('./components/GMap.vue')['default']
+    Header: typeof import('./components/Header.vue')['default']
     OpeningTimes: typeof import('./components/OpeningTimes.vue')['default']
-    Petrolstations: typeof import('./components/Petrolstations.vue')['default']
     README: typeof import('./components/README.md')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Station: typeof import('./components/Station.vue')['default']
     Stations: typeof import('./components/Stations.vue')['default']
+    Switch: typeof import('./components/Switch.vue')['default']
   }
 }
 

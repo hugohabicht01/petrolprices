@@ -30,39 +30,43 @@ async function fetchStations(lat: number, lng: number) {
   return prices
 }
 
-export const usePetrolPrices = (lat: Ref<number>, lng: Ref<number>, { refreshDistanceThreshold }: { refreshDistanceThreshold: number }) => {
-  const prices = ref<PetrolPrices | null>(null)
-  const error = ref<Error | null>(null)
+export const usePetrolPrices = (latlng: Ref<{ lat: number; lng: number }>, { refreshDistanceThreshold }: { refreshDistanceThreshold: number }) => {
+  const prices = ref<PetrolPrices | undefined>(undefined)
+  const error = ref<Error | undefined>(undefined)
   const progress = ref<fetchState>(fetchState.idle)
   const refreshCount = ref(0)
-
-  const previous = ref<ICoord[]>([{ lat: lat.value, lng: lng.value }])
+  const previous = ref<ICoord[]>([])
 
   const distanceToPrevious = computed(() => {
+    if (previous.value.length === 0)
+      return Infinity
     const { lat: prevLat, lng: prevLng } = previous.value[previous.value.length - 1]
-    return haversine({ lat: lat.value, lng: lng.value }, { lat: prevLat, lng: prevLng }, { unit: 'meter' })
+    if (prevLat === Infinity || prevLng === Infinity)
+      return Infinity
+
+    return haversine({ lat: latlng.value.lat, lng: latlng.value.lng }, { lat: prevLat, lng: prevLng }, { unit: 'meter', format: '{lat,lng}' })
   })
 
   function doFetch() {
-    prices.value = null
+    const { lat, lng } = latlng.value
+    if (lat === Infinity || lng === Infinity)
+      return
     progress.value = fetchState.fetching
-    previous.value.push({ lat: lat.value, lng: lng.value })
-    fetchStations(lat.value, lng.value)
+    fetchStations(lat, lng)
       .then(data => {
         prices.value = data
         progress.value = fetchState.done
-        error.value = null
+        error.value = undefined
         refreshCount.value = refreshCount.value + 1
+        previous.value.push({ lat, lng })
       }).catch(err => {
         error.value = err
         progress.value = fetchState.error
-        prices.value = null
+        prices.value = undefined
       })
   }
-  // watchEffect(doFetch)
-  setTimeout(doFetch, 0)
-  watch(() => ({ lat, lng }), () => {
-    // If the coordinates aren't at least 50 meters apart, then we won't refetch
+
+  watchEffect(() => {
     if (distanceToPrevious.value > refreshDistanceThreshold)
       doFetch()
   })

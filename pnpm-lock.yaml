@@ -2,9 +2,12 @@ lockfileVersion: 5.4
 
 specifiers:
   '@antfu/eslint-config': ^0.22.0
+  '@googlemaps/js-api-loader': ^1.14.1
   '@iconify-json/carbon': ^1.1.3
+  '@iconify-json/mdi': ^1.1.12
   '@intlify/vite-plugin-vue-i18n': ^4.0.0
   '@netlify/functions': ^1.0.0
+  '@types/google.maps': ^3.48.7
   '@types/haversine': ^1.1.5
   '@types/markdown-it-link-attributes': ^3.0.1
   '@types/node': ^14.18.16
@@ -50,6 +53,7 @@ specifiers:
   vue-tsc: ^0.34.11
 
 dependencies:
+  '@googlemaps/js-api-loader': 1.14.1
   '@netlify/functions': 1.0.0
   '@types/node': 14.18.16
   '@vueuse/core': 8.4.1_vue@3.2.33
@@ -68,7 +72,9 @@ dependencies:
 devDependencies:
   '@antfu/eslint-config': 0.22.0_t725usgvqspm5woeqpaxbfp2qu
   '@iconify-json/carbon': 1.1.4
+  '@iconify-json/mdi': 1.1.12
   '@intlify/vite-plugin-vue-i18n': 4.0.0_vite@2.9.8+vue-i18n@9.1.10
+  '@types/google.maps': 3.48.7
   '@types/haversine': 1.1.5
   '@types/markdown-it-link-attributes': 3.0.1
   '@types/nprogress': 0.2.0
@@ -1460,6 +1466,12 @@ packages:
       - supports-color
     dev: true
 
+  /@googlemaps/js-api-loader/1.14.1:
+    resolution: {integrity: sha512-LqyjmeynkXZqocdlsaOgNhsqaonKGRX/E+1yX0XKSQYFXNFjGu4E24ZPALPJv7QrjOqUK9UtniW2JRbBIYyBxw==}
+    dependencies:
+      fast-deep-equal: 3.1.3
+    dev: false
+
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
     engines: {node: '>=10.10.0'}
@@ -1477,6 +1489,12 @@ packages:
 
   /@iconify-json/carbon/1.1.4:
     resolution: {integrity: sha512-I2Y80wAR+Z3Ut68xiwBfRtw4Lwj7IqeOkCfEnWFC9/dA2ixIJEkCxy8HyNLO3z9RiSF7HZtgI8qGHhyNA2b6EQ==}
+    dependencies:
+      '@iconify/types': 1.1.0
+    dev: true
+
+  /@iconify-json/mdi/1.1.12:
+    resolution: {integrity: sha512-n2bPga58OcsIMBHtL5EHPgWqIZXA95O/VOGa4xB1u6/37XocMWZz8WBnnQas+SpFuWMxlsYxPTbvOcrQt1i9kg==}
     dependencies:
       '@iconify/types': 1.1.0
     dev: true
@@ -2652,6 +2670,10 @@ packages:
     dependencies:
       '@types/minimatch': 3.0.5
       '@types/node': 16.11.33
+    dev: true
+
+  /@types/google.maps/3.48.7:
+    resolution: {integrity: sha512-mssJhNv6jwk+zyh0MpYWWTsL99l84nEz7m+l0p4MY2f2iqdkOYl2kDFdB7g7ME0ih41V0kaZXsjntkq5ul/UyQ==}
     dev: true
 
   /@types/got/8.3.6:
@@ -6474,7 +6496,6 @@ packages:
 
   /fast-deep-equal/3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
-    dev: true
 
   /fast-diff/1.2.0:
     resolution: {integrity: sha512-xJuoT5+L99XlZ8twedaRf6Ax2TgQVxvgZOYoPKqZufmJib0tL2tegPBOZb1pVNgIhlqDlA0eO0c3wBvQcmzx4w==}
