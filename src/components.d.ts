@@ -10,6 +10,8 @@ declare module '@vue/runtime-core' {
     Geolocation: typeof import('./components/Geolocation.vue')['default']
     GMap: typeof import('./components/GMap.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
+    IconMoon: typeof import('./components/IconMoon.vue')['default']
+    IconSun: typeof import('./components/IconSun.vue')['default']
     OpeningTimes: typeof import('./components/OpeningTimes.vue')['default']
     README: typeof import('./components/README.md')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

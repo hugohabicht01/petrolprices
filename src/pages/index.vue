@@ -8,7 +8,6 @@ const { prices, progress, error, refreshCount, distanceToPrevious, previous, doF
 const onSelected = (id: string) => {
   console.log(`Selected: ${id}`)
 }
-
 </script>
 
 <template>
@@ -24,6 +23,8 @@ const onSelected = (id: string) => {
       <h2>Composable infos</h2>
       <p>Previous: {{ previous }}</p>
       <p>distanceToPrevious: {{ distanceToPrevious }}</p>
+    </div>
+    <div>
       <button dark:bg-gray-200 dark:text-gray-700 bg-gray-300 py-2 px-4 rounded @click="doFetch">
         Find prices
       </button>

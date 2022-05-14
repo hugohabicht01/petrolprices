@@ -9,7 +9,7 @@ body,
 }
 
 html.dark {
-  background: #121212;
+  background: rgba(22,78,99, 1)
 }
 
 #nprogress {
@@ -25,4 +25,20 @@ html.dark {
   left: 0;
   width: 100%;
   height: 2px;
+}
+
+ :root {
+  --vt-c-text-light-1: #213547;
+  --vt-c-text-light-2: rgba(60, 60, 60, 0.70);
+  --vt-c-text-dark-1: rgba(255, 255, 255, 0.87);
+  --vt-c-text-dark-2: rgba(235, 235, 235, 0.60);
+  --vt-c-divider: var(--vt-c-divider-light-1);
+  --vt-c-text-1: var(--vt-c-text-light-1);
+  --vt-c-text-2: var(--vt-c-text-light-2);
+}
+
+.dark {
+  --vt-c-bg-mute: var(--vt-c-black-mute);
+  --vt-c-text-1: var(--vt-c-text-dark-1);
+  --vt-c-text-2: var(--vt-c-text-dark-2);
 }

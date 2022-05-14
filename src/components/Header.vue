@@ -11,31 +11,50 @@ const toggleLocales = () => {
 </script>
 
 <template>
-  <header>
-    <nav text-xl flex flex-row justify-start p-6>
+  <header fixed w-full text-xl p-6 backdrop-blur-sm bg-slate-100 z-50 bg-op-60 dark:bg-cyan-900 dark:bg-op-90>
+    <nav flex flex-row justify-start justify-between>
       <RouterLink to="/">
         <h1>petrolprices</h1>
       </RouterLink>
 
-      <button class="icon-btn mx-2 !outline-none" :title="t('button.toggle_dark')" @click="toggleDark()">
-        <div i="carbon-sun dark:carbon-moon" />
-      </button>
-      <Switch aria-label="toggle dark mode" @click="toggleDark()">
-        <div i="dark:carbon-moon" class="opacity-0 h-3 w-3 absolute top-3px left-3px fill-black dark:fill-white" />
-        <div i="carbon-sun" class="dark:opacity-0 h-3 w-3 absolute top-3px left-3px fill-black dark:fill-white" />
-      </Switch>
+      <div flex items-center>
+        <Switch aria-label="toggle dark mode" class="vt-switch-appearance" @click="toggleDark()">
+          <IconMoon class="vt-switch-appearance-moon" />
+          <IconSun class="vt-switch-appearance-sun" />
+        </Switch>
 
-      <a class="icon-btn mx-2" :title="t('button.toggle_langs')" @click="toggleLocales">
-        <div i-carbon-language />
-      </a>
+        <a class="icon-btn mx-2" :title="t('button.toggle_langs')" @click="toggleLocales">
+          <div i-carbon-language />
+        </a>
 
-      <RouterLink class="icon-btn mx-2" to="/about" :title="t('button.about')">
-        <div i-carbon-dicom-overlay />
-      </RouterLink>
+        <RouterLink class="icon-btn mx-2" to="/about" :title="t('button.about')">
+          <div i-carbon-dicom-overlay />
+        </RouterLink>
 
-      <a class="icon-btn mx-2" rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank" title="GitHub">
-        <div i-carbon-logo-github />
-      </a>
+        <a class="icon-btn mx-2" rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank" title="GitHub">
+          <div i-carbon-logo-github />
+        </a>
+      </div>
     </nav>
   </header>
 </template>
+
+<style>
+.vt-switch-appearance-sun {
+  opacity: 1;
+}
+.vt-switch-appearance-moon {
+  opacity: 0;
+}
+
+.dark .vt-switch-appearance-sun {
+  opacity: 0;
+}
+.dark .vt-switch-appearance-moon {
+  opacity: 1;
+}
+
+.dark .vt-switch-appearance .vt-switch-check {
+  transform: translateX(18px);
+}
+</style>

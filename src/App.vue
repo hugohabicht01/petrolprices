@@ -11,5 +11,8 @@ useHead({
 </script>
 
 <template>
-  <RouterView />
+  <Header />
+  <div relative top-10>
+    <RouterView />
+  </div>
 </template>

@@ -14,6 +14,8 @@ import Prism from 'markdown-it-prism'
 import LinkAttributes from 'markdown-it-link-attributes'
 import Unocss from 'unocss/vite'
 import VueTypeImports from 'vite-plugin-vue-type-imports'
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
 
 const markdownWrapperClasses = 'prose prose-sm m-auto text-left'
 
@@ -53,6 +55,7 @@ export default defineConfig({
 
     // https://github.com/antfu/unplugin-vue-components
     Components({
+      resolvers: [IconsResolver({ enabledCollections: ['mdi'] })],
       // allow auto load markdown components under `./src/components/`
       extensions: ['vue', 'md'],
       // allow auto import and register components used in markdown
@@ -121,7 +124,9 @@ export default defineConfig({
     // https://github.com/antfu/vite-plugin-inspect
     // Visit http://localhost:3333/__inspect/ to see the inspector
     Inspect(),
-    VueTypeImports()
+    VueTypeImports(),
+    Icons(),
+
   ],
 
   // https://github.com/antfu/vite-ssg
