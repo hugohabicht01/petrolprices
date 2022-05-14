@@ -5,7 +5,7 @@
 
 [build]
   publish = "dist"
-  command = "npx pnpm i --store=node_modules/.pnpm-store && pnpm vite build"
+  command = "npx pnpm i --store=node_modules/.pnpm-store && pnpm build"
 
 [[redirects]]
   from = "/api/*"
