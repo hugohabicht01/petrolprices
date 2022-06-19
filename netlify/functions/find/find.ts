@@ -1,12 +1,20 @@
 import type { Handler } from '@netlify/functions'
 import { byCoordinates } from 'tankerkoenigv4'
+import Redis from 'ioredis'
 
 interface RequestParameters {
   lat: string
   lng: string
   rad?: string
 }
+
 const TANKERKOENIG_APIKEY = process.env.TANKERKOENIG_APIKEY ?? ''
+// const REDIS_URL = process.env.REDIS_URL
+// if (!REDIS_URL || REDIS_URL === '') {
+//   throw new Error('cant connect to redis')
+// }
+
+// const client = new Redis(REDIS_URL)
 
 export const handler: Handler = async (event) => {
   if (!TANKERKOENIG_APIKEY) {
@@ -17,6 +25,7 @@ export const handler: Handler = async (event) => {
       }),
     }
   }
+
 
   const { lat, lng, rad = '2' } = event.queryStringParameters as unknown as RequestParameters
 
@@ -35,8 +44,13 @@ export const handler: Handler = async (event) => {
 
   const stations = await byCoordinates({ apikey: TANKERKOENIG_APIKEY, lat: parsedLat, lng: parsedLng, rad: parsedRadius })
 
+  // Count requests served
+
   return {
     statusCode: 200,
     body: JSON.stringify(stations),
+    headers: {
+      "Cache-Control": `max-age=${60}`
+    },
   }
 }

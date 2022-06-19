@@ -1,41 +1,47 @@
 <script setup lang="ts">
-import { fetchState, usePetrolPrices } from '~/composables/petrolPrices'
+import { storeToRefs } from 'pinia';
+import { useLocationStore } from '~/stores/location'
+import { usePetrolPrices, fetchState } from '~/composables/petrolPrices'
 
-const { coords } = useGeolocation({ enableHighAccuracy: true })
-const latlng = computed(() => ({ lat: coords.value.latitude, lng: coords.value.longitude }))
-const { prices, progress, error, refreshCount, distanceToPrevious, previous, doFetch } = usePetrolPrices(latlng, { refreshDistanceThreshold: 25 })
+const locationData = useLocationStore()
+const { error: locationError, coords, locatedAt, throttledLatlng } = storeToRefs(locationData)
+const { resetDistanceTracking } = locationData
+const { prices, progress, error, doFetch } = usePetrolPrices(throttledLatlng)
 
-const onSelected = (id: string) => {
-  console.log(`Selected: ${id}`)
+// TODO: Put the logic of this component into a pinia store, to preserve state between switching pages, reloads, etc
+
+
+const forceRefreshPrices = () => {
+  doFetch()
+  resetDistanceTracking()
 }
+
+// const onSelected = (id: string) => {
+//   console.log(`Selected: ${id}`)
+// }
+
+// const onRadiusChanged = (latlng: google.maps.LatLng, radius: number) => {
+// }
+// console.log(`Search should now be at ${latlng.lat()}, ${latlng.lng()} with radius ${radius}`)
 </script>
 
 <template>
   <div>
-    <GMap :data="prices" @selected="onSelected" />
-    <!-- <button dark:bg-gray-200 dark:text-gray-700 bg-gray-300 py-2 px-4 rounded @click="store.fetchStations">
-      Find prices
-    </button> -->
+    <!-- <GMap :data="prices" @change-selected="onSelected" @change-bounds="onRadiusChanged" /> -->
     <div>
-      lat: {{ latlng.lat }}, lng: {{ latlng.lng }}
+      <button dark:bg-gray-200 dark:text-gray-700 bg-gray-300 py-2 px-4 rounded @click="forceRefreshPrices">Find
+        prices</button>
     </div>
     <div>
-      <h2>Composable infos</h2>
-      <p>Previous: {{ previous }}</p>
-      <p>distanceToPrevious: {{ distanceToPrevious }}</p>
+      <p>throttledLatlng: {{ throttledLatlng }}</p>
+      <p>coords: {{ coords.latitude }}, {{ coords.longitude }}</p>
+      <p>locatedAt: {{ locatedAt }}</p>
+      <p text-red v-if="locationError">Couldn't get coords due to: {{ locationError.message }}, try reloading the page
+        and allow the
+        page access to your geolocation</p>
     </div>
-    <div>
-      <button dark:bg-gray-200 dark:text-gray-700 bg-gray-300 py-2 px-4 rounded @click="doFetch">
-        Find prices
-      </button>
-    </div>
-    <p>Refresh count: {{ refreshCount }}</p>
-    <p v-if="error">
-      Couldn't find real time fuel prices
-    </p>
-    <p v-if="progress === fetchState.fetching">
-      loading...
-    </p>
+    <p v-if="error">Couldn't find real time fuel prices</p>
+    <p v-if="progress === fetchState.fetching">loading...</p>
     <Stations v-if="prices" :data="prices" />
   </div>
 </template>

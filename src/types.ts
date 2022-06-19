@@ -7,3 +7,8 @@ export type UserModule = (ctx: ViteSSGContext) => void
 export interface PetrolStationsData {
   data?: CoordinatesResult
 }
+
+export interface LatLng {
+  lat: number
+  lng: number
+}

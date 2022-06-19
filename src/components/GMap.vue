@@ -2,10 +2,6 @@
 import { Loader } from '@googlemaps/js-api-loader'
 import type { PetrolStationsData } from '~/types'
 
-// Fallback coords, in case we can't retrieve the user's location
-// This coordinate is pretty much the middle of Berlin
-const fallBackCoords = { lat: 52.5232, lng: 13.4127 }
-
 let GOOGLE_MAPS_APIKEY = 'AIzaSyA7hIehrKYoBwLICdOM6er-4R06sUHSa_w'
 if (import.meta.env.DEV === true) {
   // In development, we use an unrestricted API key, the main key is restricted to v2.cyborgs.tech
@@ -20,15 +16,12 @@ const loader = new Loader({
 const mapDiv = ref<HTMLElement | null>(null)
 const map = ref<google.maps.Map | null>(null)
 
+// TODO: Get latlng from useLocation
 const { data } = defineProps<PetrolStationsData>()
-const emit = defineEmits<{ (e: 'selected', id: string): void }>()
+const emit = defineEmits<{ (e: 'changeSelected', id: string): void; (e: 'changeBounds', latlng: google.maps.LatLng, radius: number): void }>()
 
 onMounted(async () => {
   const { coords } = useGeolocation({ enableHighAccuracy: true })
-  const latlng = computed(() => ({
-    lat: coords.value.latitude === Infinity ? fallBackCoords.lat : coords.value.latitude,
-    lng: coords.value.longitude === Infinity ? fallBackCoords.lng : coords.value.longitude
-  }))
   await loader.load()
   if (mapDiv.value) {
     map.value = new google.maps.Map(mapDiv.value, {
@@ -37,14 +30,28 @@ onMounted(async () => {
       clickableIcons: false,
     })
 
-    const marker = new google.maps.Marker({
+    map.value.addListener('bounds_changed', () => {
+      if (!map.value)
+        return
+      const bounds = map.value.getBounds()
+      const centerPoint = map.value.getCenter()
+      const northEastPoint = bounds?.getNorthEast()
+
+      if (!bounds || !northEastPoint || !centerPoint)
+        return
+
+      const searchRadius = Math.round(google.maps.geometry.spherical.computeDistanceBetween(centerPoint, northEastPoint) / 100) / 10
+      emit('changeBounds', centerPoint, searchRadius)
+    })
+
+    const currentPosMarker = new google.maps.Marker({
       position: latlng.value,
       map: map.value,
     })
 
     watchEffect(() => {
       if (map.value) {
-        marker.setPosition(latlng.value)
+        currentPosMarker.setPosition(latlng.value)
         map.value.setCenter(latlng.value)
       }
     })
@@ -80,11 +87,17 @@ onMounted(async () => {
           map: map.value,
           icon: PetrolStationIcon,
         })
-        marker.addListener('click', () => emit('selected', station.id))
+        marker.addListener('click', () => emit('changeSelected', station.id))
         stationMarkers.value.push(marker)
       })
     },
-    { immediate: true })
+      { immediate: true })
+
+    // const directionsService = new google.maps.DirectionsService()
+    // directionsService.route({ destination: 'Maintaler Straße 20 63452 Hanau', origin: 'Bachstrasse 10 63452 Hanau', travelMode: google.maps.TravelMode.DRIVING }, (response, status) => {
+    //   if (status === 'OK')
+    //     console.log(JSON.parse(JSON.stringify(response)))
+    // })
   }
 })
 </script>
