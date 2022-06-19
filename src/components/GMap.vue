@@ -15,6 +15,7 @@ if (import.meta.env.DEV === true) {
 
 const loader = new Loader({
   apiKey: GOOGLE_MAPS_APIKEY,
+  libraries: ['geometry', 'drawing']
 })
 const mapDiv = ref<HTMLElement | null>(null)
 const map = ref<google.maps.Map | null>(null)
