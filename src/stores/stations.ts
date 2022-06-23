@@ -6,42 +6,41 @@ const REFETCH_INTERVAL = 5 * 60 * 1000
 const REFETCH_THRESHOLD = 2 * 60 * 1000
 
 export const useStationsStore = defineStore('stations', () => {
-
+  /*
+   *
+   * TODO: Needs concept
+   * Given that I want to fetch stations when panning on the map,
+   * while also fetching stations while the car is moving,
+   * I need somehow decide what coords to use, either the coords of the GPS or the coords
+   * of the gmaps viewport. Another option would be to fetch both, but that would often mean doing loads of calls twice 
+   * Given that I'm not using any sort of caching and that the tankerkoenig API is shared + ratelimited,
+   * that probably would'nt be a good idea
+   *
+   */
   const locationData = useLocationStore()
+
   const { error: locationError, coords, locatedAt, throttledLatlng } = storeToRefs(locationData)
-  // const { resetDistanceTracking } = locationData
-  const { prices, progress, error, doFetch, lastFetchTimestamp } = usePetrolPrices(throttledLatlng)
+  const { resetDistanceTracking } = locationData
+  const { prices, progress, error: priceError, doFetch, lastFetchTimestamp } = usePetrolPrices(throttledLatlng)
 
 
-  const { pause, resume, isActive } = useIntervalFn(() => {
+  const { pause, resume, isActive: refetchingIsActive } = useIntervalFn(() => {
     const timeSinceLastFetch = Date.now() - lastFetchTimestamp.value
     if (timeSinceLastFetch > REFETCH_THRESHOLD) {
       doFetch()
     }
   }, REFETCH_INTERVAL)
 
-  watch(error, () => {
-    if (error) {
-      pause()
-    } else {
-      resume()
-    }
-  })
+  const stopOnError = () => priceError ? pause() : resume()
 
-  watch(locationError, () => {
-    if (locationError) {
-      pause()
-    } else {
-      resume()
-    }
-  })
-  // TODO: Put the logic of this component into a pinia store, to preserve state between switching pages, reloads, etc
+  watch(priceError, stopOnError)
+  watch(locationError, stopOnError)
 
 
-  // const forceRefreshPrices = () => {
-  //   doFetch()
-  //   resetDistanceTracking()
-  // }
+  const forceRefreshPrices = () => {
+    doFetch()
+    resetDistanceTracking()
+  }
 
   return {
     locationError,
@@ -50,8 +49,10 @@ export const useStationsStore = defineStore('stations', () => {
     throttledLatlng,
     prices,
     progress,
-    error,
-    doFetch
+    priceError,
+    doFetch,
+    refetchingIsActive,
+    forceRefreshPrices
   }
 })
 

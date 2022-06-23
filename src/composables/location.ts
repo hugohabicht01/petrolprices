@@ -12,6 +12,7 @@ interface useLocationOptions {
 
 /**
  * Simple wrapper around navigator.geolocation, with fallback coords and coordinate change throttling
+ * TODO: Make it possible to pass the options as refs
  */
 export const useLocation = (options: useLocationOptions = {}) => {
   const {

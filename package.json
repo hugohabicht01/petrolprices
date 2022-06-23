@@ -26,6 +26,7 @@
     "pinia": "^2.0.13",
     "prism-theme-vars": "^0.2.2",
     "tankerkoenigv4": "^1.0.1",
+    "v3-gmaps": "^0.1.4",
     "vue": "^3.2.33",
     "vue-demi": "^0.12.5",
     "vue-i18n": "^9.1.9",
