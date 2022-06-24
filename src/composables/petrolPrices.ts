@@ -42,7 +42,7 @@ export const usePetrolPrices = (latlng: Ref<LatLng>) => {
 
   function doFetch() {
     console.log(`doFetch was called, latlng: ${JSON.stringify(latlng.value, null, 2)}`)
-    if (!latlng)
+    if (!latlng.value)
       return
     const { lat, lng } = latlng.value
     console.log(`doFetch was called with ${lat}, ${lng}`)
