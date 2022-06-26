@@ -1,6 +1,5 @@
 import type { Handler } from '@netlify/functions'
 import { byCoordinates } from 'tankerkoenigv4'
-import Redis from 'ioredis'
 
 interface RequestParameters {
   lat: string
@@ -43,8 +42,6 @@ export const handler: Handler = async (event) => {
   }
 
   const stations = await byCoordinates({ apikey: TANKERKOENIG_APIKEY, lat: parsedLat, lng: parsedLng, rad: parsedRadius })
-
-  // Count requests served
 
   return {
     statusCode: 200,
