@@ -21,3 +21,6 @@ station:
   prices: Prices
   openingTimes: Opening times
   until: until
+price:
+  increased: Price increased by
+  decreased: Price decreased by

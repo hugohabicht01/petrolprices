@@ -14,6 +14,7 @@ const formatEuro = (amount: number) => new Intl.NumberFormat('de-DE', { style: '
 const stationName = computed(() => {
   const nameTrimmed = station.name ? station.name.trim() : undefined
   const brandTrimmed = station.brand ? station.brand.trim() : undefined
+
   if (nameTrimmed && brandTrimmed && nameTrimmed?.startsWith(brandTrimmed)) {
     const name = nameTrimmed.replace(brandTrimmed, '').trim()
     return [brandTrimmed, name].join(' ')
@@ -47,22 +48,12 @@ const navigationLink = computed(() => {
     </div>
     <div border border-gray-300 rounded w-max self-center>
       <table>
-        <tr v-for="fueltype in station.fuels" :key="fueltype.name" class="last:border-b-none border-b border-gray-300 ">
-          <td class="p-2 border-r border-gray-300">
-            {{ fueltype.name }}
-          </td>
-          <td class="p-2">
-            {{ formatEuro(fueltype.price) }}
-          </td>
-          <!-- <td> -->
-          <!--   {{ fueltype.lastChange?.timestamp }} -->
-          <!--   {{ fueltype.lastChange?.amount }} -->
-          <!-- </td> -->
-        </tr>
+        <Price v-for="fueltype in station.fuels" :key="fueltype.name"
+          class="last:border-b-none border-b border-gray-300 " :fuel="fueltype" />
       </table>
     </div>
     <OpeningTimes v-if="station?.openingTimes?.length !== 0" :opening-times="station.openingTimes" />
     <a :href="navigationLink" target="_blank" dark:bg-gray-200 dark:text-gray-700 bg-gray-300 py-2 px-4 mt-6 self-center
-      rounded>Navigation</a>
+      rounded>Open Navigation</a>
   </div>
 </template>

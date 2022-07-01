@@ -6,7 +6,7 @@ import { fetchState } from '~/composables';
 const stations = useStationsStore()
 const { doFetch, forceRefreshPrices } = stations
 
-const { priceError, locationError, throttledLatlng, prices, progress, locatedAt, coords, refetchingIsActive } = storeToRefs(stations)
+const { priceError, locationError, throttledLatlng, prices, progress, locatedAt, refetchingIsActive } = storeToRefs(stations)
 
 
 </script>
@@ -20,8 +20,7 @@ const { priceError, locationError, throttledLatlng, prices, progress, locatedAt,
       </button>
     </div>
     <div>
-      <p>throttledLatlng: {{ throttledLatlng }}</p>
-      <p>coords: {{ coords.latitude }}, {{ coords.longitude }}</p>
+      <p>coords: {{ throttledLatlng.lat }}, {{ throttledLatlng.lng }}</p>
       <p>locatedAt: {{ locatedAt }}</p>
       <p>refetchingIsActive: {{ refetchingIsActive }}</p>
       <p text-red v-if="locationError">Couldn't get coords due to: {{ locationError.message }}, try reloading the page

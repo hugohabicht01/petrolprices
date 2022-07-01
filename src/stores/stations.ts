@@ -38,6 +38,7 @@ export const useStationsStore = defineStore('stations', () => {
 
 
   const forceRefreshPrices = () => {
+    resume()
     doFetch()
     resetDistanceTracking()
   }

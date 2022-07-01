@@ -33,5 +33,10 @@ export const useTimestamp = (timestamp: MaybeRef<string>, refreshThreshold = 10_
     relative.value = calcRelative()
   }, refreshThreshold)
 
-  return { relative, absolute }
+  const recalculate = () => {
+    relative.value = calcRelative()
+    absolute.value = calcAbsolute()
+  }
+
+  return { relative, absolute, recalculate }
 }
