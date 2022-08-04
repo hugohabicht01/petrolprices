@@ -12,23 +12,23 @@ export const useStationsStore = defineStore('stations', () => {
    * Given that I want to fetch stations when panning on the map,
    * while also fetching stations while the car is moving,
    * I need somehow decide what coords to use, either the coords of the GPS or the coords
-   * of the gmaps viewport. Another option would be to fetch both, but that would often mean doing loads of calls twice 
+   * of the gmaps viewport. Another option would be to fetch both, but that would often mean doing loads of calls twice
    * Given that I'm not using any sort of caching and that the tankerkoenig API is shared + ratelimited,
    * that probably would'nt be a good idea
    *
    */
   const locationData = useLocationStore()
+  const radius = ref(2)
+  const debouncedRadius = debouncedRef(radius, 1000)
 
   const { error: locationError, coords, locatedAt, throttledLatlng } = storeToRefs(locationData)
   const { resetDistanceTracking } = locationData
-  const { prices, progress, error: priceError, doFetch, lastFetchTimestamp } = usePetrolPrices(throttledLatlng)
-
+  const { prices, progress, error: priceError, doFetch, lastFetchTimestamp } = usePetrolPrices(throttledLatlng, radius)
 
   const { pause, resume, isActive: refetchingIsActive } = useIntervalFn(() => {
     const timeSinceLastFetch = Date.now() - lastFetchTimestamp.value
-    if (timeSinceLastFetch > REFETCH_THRESHOLD) {
+    if (timeSinceLastFetch > REFETCH_THRESHOLD)
       doFetch()
-    }
   }, REFETCH_INTERVAL)
 
   const stopOnError = () => priceError ? pause() : resume()
@@ -36,12 +36,14 @@ export const useStationsStore = defineStore('stations', () => {
   watch(priceError, stopOnError)
   watch(locationError, stopOnError)
 
-
   const forceRefreshPrices = () => {
     resume()
     doFetch()
     resetDistanceTracking()
   }
+
+  // FIXME: THis doesn't work at all yet, neither the debouncing, nor the refetching with a different radius
+  watch(debouncedRadius, () => { doFetch() })
 
   return {
     locationError,
@@ -53,7 +55,8 @@ export const useStationsStore = defineStore('stations', () => {
     priceError,
     doFetch,
     refetchingIsActive,
-    forceRefreshPrices
+    forceRefreshPrices,
+    radius: debouncedRadius
   }
 })
 

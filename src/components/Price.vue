@@ -26,8 +26,10 @@ const priceChangedBy = computed(() => formatEuro(Math.abs(fuel.lastChange?.amoun
         {{ formattedPrice }}
       </td>
       <template #popper>
-        <div v-if="fuel.lastChange?.timestamp"
-          :class="{ 'text-green-500': !priceIncreased, 'text-red-500': priceIncreased }">
+        <div
+          v-if="fuel.lastChange?.timestamp"
+          :class="{ 'text-green-500': !priceIncreased, 'text-red-500': priceIncreased }"
+        >
           <span>{{ priceIncreased ? t('price.increased') : t('price.decreased') }}&nbsp;</span>
           <span>
             {{ priceChangedBy }}&nbsp;

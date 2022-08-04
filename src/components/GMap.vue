@@ -2,6 +2,9 @@
 import { Loader } from '@googlemaps/js-api-loader'
 import type { PetrolStationsData } from '~/types'
 
+// TODO: Get latlng from useLocation
+const { data } = defineProps<PetrolStationsData>()
+const emit = defineEmits<{ (e: 'changeSelected', id: string): void; (e: 'changeBounds', latlng: google.maps.LatLng, radius: number): void }>()
 let GOOGLE_MAPS_APIKEY = 'AIzaSyA7hIehrKYoBwLICdOM6er-4R06sUHSa_w'
 if (import.meta.env.DEV === true) {
   // In development, we use an unrestricted API key, the main key is restricted to v2.cyborgs.tech
@@ -15,10 +18,6 @@ const loader = new Loader({
 })
 const mapDiv = ref<HTMLElement | null>(null)
 const map = ref<google.maps.Map | null>(null)
-
-// TODO: Get latlng from useLocation
-const { data } = defineProps<PetrolStationsData>()
-const emit = defineEmits<{ (e: 'changeSelected', id: string): void; (e: 'changeBounds', latlng: google.maps.LatLng, radius: number): void }>()
 
 onMounted(async () => {
   const { coords } = useGeolocation({ enableHighAccuracy: true })
@@ -91,7 +90,7 @@ onMounted(async () => {
         stationMarkers.value.push(marker)
       })
     },
-      { immediate: true })
+    { immediate: true })
 
     // const directionsService = new google.maps.DirectionsService()
     // directionsService.route({ destination: 'Maintaler Straße 20 63452 Hanau', origin: 'Bachstrasse 10 63452 Hanau', travelMode: google.maps.TravelMode.DRIVING }, (response, status) => {

@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
+import { storeToRefs } from 'pinia'
 import { useStationsStore } from '~/stores/stations'
-import { fetchState } from '~/composables';
+import { useLocationStore } from '~/stores/location'
+import { fetchState } from '~/composables'
 
 const stations = useStationsStore()
+const { reset: resetLocation } = useLocationStore()
+
 const { doFetch, forceRefreshPrices } = stations
 
 const { priceError, locationError, throttledLatlng, prices, progress, locatedAt, refetchingIsActive } = storeToRefs(stations)
-
-
 </script>
 
 <template>
@@ -18,17 +19,26 @@ const { priceError, locationError, throttledLatlng, prices, progress, locatedAt,
       <button dark:bg-gray-200 dark:text-gray-700 bg-gray-300 py-2 px-4 rounded @click="forceRefreshPrices">
         Find prices
       </button>
+      <button dark:bg-gray-200 dark:text-gray-700 bg-gray-300 py-2 px-4 rounded @click="resetLocation">
+        Reset gps
+      </button>
     </div>
     <div>
       <p>coords: {{ throttledLatlng.lat }}, {{ throttledLatlng.lng }}</p>
       <p>locatedAt: {{ locatedAt }}</p>
       <p>refetchingIsActive: {{ refetchingIsActive }}</p>
-      <p text-red v-if="locationError">Couldn't get coords due to: {{ locationError.message }}, try reloading the page
+      <p v-if="locationError" text-red>
+        Couldn't get coords due to: {{ locationError.message }}, try reloading the page
         and allow the
-        page access to your geolocation</p>
+        page access to your geolocation
+      </p>
     </div>
-    <p v-if="priceError">Couldn't find real time fuel prices</p>
-    <p v-if="progress === fetchState.fetching">loading...</p>
+    <p v-if="priceError">
+      Couldn't find real time fuel prices
+    </p>
+    <p v-if="progress === fetchState.fetching">
+      loading...
+    </p>
     <Stations v-if="prices" :data="prices" />
   </div>
 </template>

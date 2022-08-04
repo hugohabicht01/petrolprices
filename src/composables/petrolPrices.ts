@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { ref } from 'vue'
 import { $fetch } from 'ohmyfetch'
-import type { PetrolPrices, LatLng } from '~/types'
+import type { LatLng, MaybeRef, PetrolPrices } from '~/types'
 
 export enum fetchState {
   'idle',
@@ -10,24 +10,22 @@ export enum fetchState {
   'error'
 }
 
-async function fetchStations(lat: number, lng: number) {
-  if (lat === undefined || lng === undefined ||
-    lat === Infinity || lng === Infinity
-    || typeof lat !== 'number' || typeof lng !== 'number') {
+async function fetchStations(lat: number, lng: number, rad = 2) {
+  if (typeof lat !== 'number' || typeof lng !== 'number' || lat === Infinity || lng === Infinity)
     throw new Error('bad coordinates')
-  }
 
   const prices = await $fetch<PetrolPrices>('/api/find', {
     params: {
       lat,
       lng,
+      rad
     },
     responseType: 'json',
   })
   return prices
 }
 
-export const usePetrolPrices = (latlng: Ref<LatLng>) => {
+export const usePetrolPrices = (latlng: Ref<LatLng>, rad: MaybeRef<number> = 2) => {
   // TODO: Refactor this to a list in order to keep a history of previously fetched values, to provide some basic level of caching
   // Maybe try to solve this in a more functional way, without this many sideeffects....
   // Currently this is one of the most impure functions I've ever written
@@ -46,11 +44,12 @@ export const usePetrolPrices = (latlng: Ref<LatLng>) => {
       return
     const { lat, lng } = latlng.value
     console.log(`doFetch was called with ${lat}, ${lng}`)
-    if (lat === Infinity || lng === Infinity)
-      return
-
+    // // TODO: remove these triple checks, these are everywhere...
+    // if (lat === Infinity || lng === Infinity)
+    //   return
+    console.log('rad: ', unref(rad))
     progress.value = fetchState.fetching
-    fetchStations(lat, lng)
+    fetchStations(lat, lng, unref(rad))
       .then(data => {
         prices.value = data
         progress.value = fetchState.done
@@ -68,5 +67,9 @@ export const usePetrolPrices = (latlng: Ref<LatLng>) => {
     console.log('watchEffect triggered, calling doFetch now')
     doFetch()
   })
+
+  if (isRef(rad))
+    watch(rad, () => doFetch)
+
   return { prices, error, progress, refreshCount, doFetch, lastFetchTimestamp }
 }

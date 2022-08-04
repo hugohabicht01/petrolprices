@@ -1,6 +1,6 @@
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 import haversine from 'haversine'
-import { LatLng } from '~/types'
+import type { LatLng } from '~/types'
 
 interface useLocationOptions {
   fallback?: LatLng
@@ -38,7 +38,6 @@ export const useLocation = (options: useLocationOptions = {}) => {
     speed: null,
   })
 
-
   function updatePosition(position: GeolocationPosition) {
     console.log('updatePosition called', position.coords)
     locatedAt.value = position.timestamp
@@ -48,9 +47,8 @@ export const useLocation = (options: useLocationOptions = {}) => {
     const { latitude: lat, longitude: lng } = position.coords
     const distanceToPrev = haversine(throttledLatlng.value, { lat, lng }, { format: '{lat,lng}', unit: 'meter' })
 
-    if (distanceToPrev > distanceThreshold) {
+    if (distanceToPrev > distanceThreshold)
       throttledLatlng.value = { lat, lng }
-    }
   }
 
   let watcher: number

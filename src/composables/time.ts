@@ -8,8 +8,7 @@ dayjs.extend(customParseFormat)
 dayjs.extend(relativeTime)
 
 // This is the format the API usually returns
-export const parseTimestamp = (date: string, format = "YYYY-MM-DDTHH:mm-ss") => dayjs(date, format)
-
+export const parseTimestamp = (date: string, format = 'YYYY-MM-DDTHH:mm-ss') => dayjs(date, format)
 
 export const useTimestamp = (timestamp: MaybeRef<string>, refreshThreshold = 10_000) => {
   const parsed = ref(parseTimestamp(unref(timestamp)))

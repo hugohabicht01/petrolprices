@@ -8,7 +8,6 @@ interface Station {
 }
 const { station } = defineProps<Station>()
 const { t } = useI18n()
-const formatEuro = (amount: number) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount).toString()
 
 // Often the name also includes the brand, thats why we're gonna try to remove it
 const stationName = computed(() => {
@@ -26,11 +25,10 @@ const stationAddress = computed(() => [station.street, station.postalCode, stati
 
 const navigationLink = computed(() => {
   const gmapsNavigationUrl = new URL('https://www.google.com/maps/dir/')
-  const params = new URLSearchParams({ 'api': '1', 'destination': stationAddress.value, 'travelmode': 'driving' })
+  const params = new URLSearchParams({ api: '1', destination: stationAddress.value, travelmode: 'driving' })
   gmapsNavigationUrl.search = params.toString()
   return gmapsNavigationUrl.toString()
 })
-
 </script>
 
 <template>
@@ -48,12 +46,16 @@ const navigationLink = computed(() => {
     </div>
     <div border border-gray-300 rounded w-max self-center>
       <table>
-        <Price v-for="fueltype in station.fuels" :key="fueltype.name"
-          class="last:border-b-none border-b border-gray-300 " :fuel="fueltype" />
+        <Price
+          v-for="fueltype in station.fuels" :key="fueltype.name"
+          class="last:border-b-none border-b border-gray-300 " :fuel="fueltype"
+        />
       </table>
     </div>
     <OpeningTimes v-if="station?.openingTimes?.length !== 0" :opening-times="station.openingTimes" />
-    <a :href="navigationLink" target="_blank" dark:bg-gray-200 dark:text-gray-700 bg-gray-300 py-2 px-4 mt-6 self-center
-      rounded>Open Navigation</a>
+    <a
+      :href="navigationLink" target="_blank" dark:bg-gray-200 dark:text-gray-700 bg-gray-300 py-2 px-4 mt-6 self-center
+      rounded
+    >Open Navigation</a>
   </div>
 </template>

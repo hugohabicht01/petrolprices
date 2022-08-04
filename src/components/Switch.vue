@@ -1,5 +1,5 @@
 <template>
-  <!-- this is a switch component shamelessly stolen from the vue docs theme, credits go out to Evan You-->
+  <!-- this is a switch component shamelessly stolen from the vue docs theme, credits go out to the vue contributors -->
   <button class="vt-switch" type="button" role="switch">
     <span class="vt-switch-check">
       <span v-if="$slots.default" class="vt-switch-icon">
@@ -64,5 +64,4 @@
   fill: var(--vt-c-text-1);
   transition: opacity 0.25s;
 }
-
 </style>

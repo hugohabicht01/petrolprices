@@ -25,7 +25,6 @@ export const handler: Handler = async (event) => {
     }
   }
 
-
   const { lat, lng, rad = '2' } = event.queryStringParameters as unknown as RequestParameters
 
   const parsedLat = parseFloat(lat)
@@ -47,7 +46,7 @@ export const handler: Handler = async (event) => {
     statusCode: 200,
     body: JSON.stringify(stations),
     headers: {
-      "Cache-Control": `max-age=${60}`
+      'Cache-Control': `max-age=${60}`
     },
   }
 }
