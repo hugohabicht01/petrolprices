@@ -24,11 +24,18 @@ const toggleLocales = () => {
       <div i-carbon-language />
     </a>
 
+    <RouterLink class="icon-btn mx-2" :title="t('button.settings')" to="/settings">
+      <div i-carbon-settings />
+    </RouterLink>
+
     <RouterLink class="icon-btn mx-2" to="/about" :title="t('button.about')">
       <div i-carbon-dicom-overlay />
     </RouterLink>
 
-    <a class="icon-btn mx-2" rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank" title="GitHub">
+    <a
+      class="icon-btn mx-2" rel="noreferrer" href="https://github.com/hugohabicht01/petrolprices" target="_blank"
+      title="GitHub"
+    >
       <div i-carbon-logo-github />
     </a>
   </nav>

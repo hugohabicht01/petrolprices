@@ -5,6 +5,7 @@ button:
   home: Home
   toggle_dark: Toggle dark mode
   toggle_langs: Change languages
+  settings: Settings
 intro:
   desc: Opinionated Vite Starter Template
   dynamic-route: Demo of dynamic route
